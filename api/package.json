@@ -19,9 +19,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "knex": "^0.95.2",
-    "mysql2": "^2.2.5"
-  },
-  "devDependencies": {
+    "mysql2": "^2.2.5",
     "body-parser": "^1.19.0"
   }
 }
