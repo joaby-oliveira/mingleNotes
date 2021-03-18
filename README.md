@@ -14,7 +14,7 @@
             This app have a system of tables, in which you can group your tasks.
         </h3>
     </div>
-    <div style="display:flex;margin-top: 20px;">
+    <div>
         <img style="margin-right: 10px" src="./images/page-home-mobile-dark.jpg" />
         <img src="./images/page-home-tablePreview-dark.jpg" />
     </div>
@@ -30,18 +30,23 @@
         <h3>
             Usefull comands
         </h3>
-        <code>
             <b>🔽 To go to the api directory </b>
             <br>
+            <code>
             cd ./api/
+            </code>
             <br>
             <b>🔽 To install all dependencies </b>
             <br>
+            <code>
             npm i
+            </code>
             <br>
             <b>🔽 To run the server</b>
             <br>
+            <code>
             npm start
+            </code>
             <br>
         </code>
     </div>
