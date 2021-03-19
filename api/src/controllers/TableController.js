@@ -51,11 +51,11 @@ class TableController {
 
     async getAll(req, res) {
         try {
-            const {userId} = req.body; 
-            if(userId != undefined) {
+            const { userId } = req.body;
+            if (userId != undefined) {
                 const userIdExists = await User.validateId(userId);
-                
-                if(userIdExists) {
+
+                if (userIdExists) {
                     const { status, code, data } = await Table.getAll(userId);
                     console.log(data);
                     if (status) {
@@ -64,17 +64,17 @@ class TableController {
                     } else {
                         res.json(data);
                     }
-                }else {
+                } else {
                     res.statusCode = 404;
-                    res.json({msg: "Id de usuário informado não existe"});
+                    res.json({ msg: "Id de usuário informado não existe" });
                 }
-            }else {
+            } else {
                 res.statusCode = 400;
-                res.json({msg: "Id de usuário não informado"});
+                res.json({ msg: "Id de usuário não informado" });
             }
-        }catch (err) {
+        } catch (err) {
             res.statusCode = 400;
-            res.json({msg: err});
+            res.json({ msg: err });
         }
     }
 
