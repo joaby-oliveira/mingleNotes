@@ -12,7 +12,6 @@ class User{
     async validateId (id) {
         try{
             const idExists = await database.select().from('users').where('id', id);
-            console.log(idExists);
             if (idExists[0]) {
                 return {status: true};
             } else {
