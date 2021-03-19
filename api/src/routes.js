@@ -14,6 +14,6 @@ router.post("/user", UserController.create);
 
 
 router.post("/table/:userId", TableController.create);
-
+router.get('/table', TableController.getAll);
 
 module.exports = router;
