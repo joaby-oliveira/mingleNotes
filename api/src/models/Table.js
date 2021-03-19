@@ -10,9 +10,9 @@ class Table {
         }
     }
 
-    async getAll(id) {
+    async getAll(userId) {
         try {
-            const data = await database.select('*').from('tables').where({'user_id': id});
+            const data = await database.select('*').from('tables').where({'user_id': userId});
             if (data.length > 0) {
                 return { status: true, code: 200, data };
             } else if (data.length == 0) {
