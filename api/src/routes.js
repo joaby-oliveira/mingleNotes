@@ -11,6 +11,7 @@ router.get('/', (req, res) => {
 });
 
 router.post("/user", UserController.create);
+router.get("/users", UserController.findAll);
 
 
 router.post("/table/:userId", TableController.create);
