@@ -13,6 +13,8 @@ router.get('/', (req, res) => {
 });
 
 router.post("/user", UserController.create);
+router.get("/users", UserController.findAll);
+router.delete("/user/:id", UserController.delete);
 
 
 router.post("/table/:userId", TableController.create);

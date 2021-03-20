@@ -4,8 +4,34 @@ class User{
     async create(data){
         try{
             await database.insert(data).table("users");
+            return {status: true, msg: 'Usuário inserido'}
         }catch(err){
-            console.log(err);
+            return {status: false, msg: 'Usuário não pode ser inserido'}
+        }
+    }
+
+    async findAll(){
+        try{
+            var users = await database.select().table("users");
+            return {status: true, users}
+        }catch(err){
+            return {status: false, msg: err}
+        }
+    }
+
+    async delete(id){
+        try{
+            var userExists = await database.select().table("users").where({id:id});
+            if(userExists[0]){
+                await database.delete().where({id: id}).table("users");
+                return {status: true, userDoesNotExists: false, msg: "Usuário deletado com sucesso"}
+            }else{
+                return {status: false, userDoesNotExists: true, msg: "Usuário não encontrado"}
+            }
+
+            
+        }catch(err){
+            return {status: false, msg: "Não foi possível deletar o usuário"}
         }
     }
 
