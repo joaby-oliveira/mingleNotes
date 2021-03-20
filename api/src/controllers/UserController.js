@@ -1,3 +1,4 @@
+const User = require("../models/User");
 const user = require("../models/User");
 
 class UserController{
@@ -30,6 +31,21 @@ class UserController{
         }else{
             res.statusCode = 406;
             res.json({status, msg})
+        }
+    }
+
+    async delete(req, res){
+        const id = req.params.id;
+        const {status, userDoesNotExists, msg} =  await user.delete(id);
+        if(status){
+            res.statusCode = 200;
+            res.json({status, msg});
+        }else if(userDoesNotExists){
+            res.statusCode = 404;
+            res.json({status, msg});
+        }else{
+            res.statusCode = 406;
+            res.json({status, msg});
         }
     }
 }
