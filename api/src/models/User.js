@@ -10,6 +10,15 @@ class User{
         }
     }
 
+    async findAll(){
+        try{
+            var users = await databasek.select().table("users");
+            return {status: true, users}
+        }catch(err){
+            return {status: false, msg: err}
+        }
+    }
+
     async validateId (id) {
         try{
             const idExists = await database.select().from('users').where('id', id);
