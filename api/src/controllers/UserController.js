@@ -22,6 +22,16 @@ class UserController{
             res.json({status, msg})
         }
     }
+    async findAll(req, res){
+        const {status, users, msg} = await user.findAll();
+        if(status){
+            res.statusCode = 200;
+            res.json({status, users})
+        }else{
+            res.statusCode = 406;
+            res.json({status, msg})
+        }
+    }
 }
 
 module.exports = new UserController();
