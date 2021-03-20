@@ -4,8 +4,9 @@ class User{
     async create(data){
         try{
             await database.insert(data).table("users");
+            return {status: true, msg: 'Usuário inserido'}
         }catch(err){
-            console.log(err);
+            return {status: false, msg: 'Usuário não pode ser inserido'}
         }
     }
 
