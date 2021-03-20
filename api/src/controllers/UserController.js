@@ -12,9 +12,15 @@ class UserController{
             gender
         }
 
-        await user.create(data);
-        res.statusCode = 200;
-        res.json({msg: "Tudo OK!"})
+
+        const {status, msg} = await user.create(data);
+        if(status){
+            res.statusCode = 200;
+            res.json({status, msg})
+        }else{
+            res.statusCode = 406;
+            res.json({status, msg})
+        }
     }
 }
 
