@@ -1,5 +1,5 @@
 const User = require("../models/User");
-const user = require("../models/User");
+const utils = require('../utils');
 
 class UserController{
     async create(req, res){
@@ -13,18 +13,30 @@ class UserController{
             gender
         }
 
+        if(utils.isOnlyLetters(data.name) == false){
+            res.statusCode = 406;
+            res.json({status: false, msg: "Não é permitido caracteres especiais no campo nome"});
+            return
+        }
 
-        const {status, msg} = await user.create(data);
+        if(utils.isDoubleSpaced(data.name) == true){
+            res.statusCode = 406;
+            res.json({status: false, msg: "Não pode ter mais de um espaço entre as palavras no campo nome"});
+            return
+        }
+
+        const {status, msg} = await User.create(data);
         if(status){
-            res.statusCode = 200;
+            res.statusCode = 201;
             res.json({status, msg})
         }else{
             res.statusCode = 406;
             res.json({status, msg})
         }
+        
     }
     async findAll(req, res){
-        const {status, users, msg} = await user.findAll();
+        const {status, users, msg} = await User.findAll();
         if(status){
             res.statusCode = 200;
             res.json({status, users})
@@ -36,7 +48,7 @@ class UserController{
 
     async delete(req, res){
         const id = req.params.id;
-        const {status, userDoesNotExists, msg} =  await user.delete(id);
+        const {status, userDoesNotExists, msg} =  await User.delete(id);
         if(status){
             res.statusCode = 200;
             res.json({status, msg});
