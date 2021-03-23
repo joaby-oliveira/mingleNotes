@@ -1,13 +1,18 @@
 const User = require("../models/User");
+const bcrypt = require('bcryptjs');
 const utils = require('../utils');
 
 class UserController{
     async create(req, res){
         const {name, email, password, nickname, birthDate, gender} = req.body;
+
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(password, salt);
+
         const data = {
             name,
             email,
-            password, 
+            password: hash, 
             nickname, 
             birthDate, 
             gender
