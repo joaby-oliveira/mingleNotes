@@ -12,8 +12,17 @@ class User{
 
     async findAll(){
         try{
-            var users = await database.select().table("users");
+            let users = await database.select().table("users");
             return {status: true, users}
+        }catch(err){
+            return {status: false, msg: err}
+        }
+    }
+
+    async findOneByEmail(email){
+        try{
+            let user = await database.select().table("users").where({email: email});
+            return {status: true, user}
         }catch(err){
             return {status: false, msg: err}
         }
