@@ -17,6 +17,7 @@ router.get("/users", UserController.findAll);
 router.delete("/user/:id", UserController.delete);
 
 
-router.post("/table/:userId", TableController.create);
+router.post("/table", TableController.create);
 router.get('/table', TableController.getAll);
+router.get('/table/:id', TableController.getSingle);
 module.exports = router;
