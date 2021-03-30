@@ -12,7 +12,7 @@ class Table {
 
     async getAll(userId) {
         try {
-            const data = await database.select('*').from('tables').where({'user_id': userId});
+            const data = await database.select('*').from('tables').where({ 'user_id': userId });
             if (data.length > 0) {
                 return { status: true, code: 200, data };
             } else if (data.length == 0) {
@@ -23,10 +23,30 @@ class Table {
                 }
             };
         } catch (err) {
-            return { status: false, data: err };
+            return { status: false, msg: err };
         }
     }
 
+    async getSingle(id) {
+        try {
+            const result = await database.select('*').from('tables').where({'id': id});
+            if(result.length === 1) {
+                return result;
+            }
+        } catch (err) {
+            return { status: false, msg: err };
+        }
+    }
+
+    async idExists(id) {
+        try {
+            const result = await database.select().from('tables').where({ 'id': id });
+            return result.length === 1;
+        } catch (err) {
+            return { status: false, msg: err };
+        }
+    }
+    
 }
 
 module.exports = new Table();
