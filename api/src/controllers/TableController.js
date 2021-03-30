@@ -1,43 +1,61 @@
 const Table = require("../models/Table");
 const User = require("../models/User");
 
+const utils = require("../utils");
+
+const validateTable = {
+    isValidName: (name) => {
+        const validate =
+            !utils.isEmpty(name) &&
+            !utils.isDoubleSpaced(name) &&
+            utils.isValidLength(name, 3)
+        return validate;
+    },
+    isValidImgUrl: (imgUrl) => {
+        const validate =
+            !utils.isDoubleSpaced(imgUrl) &&
+            utils.isValidLength(imgUrl, 10)
+        return validate;
+    },
+    isValidUserId: (userId) => {
+        const validate =
+            !utils.isEmpty(userId) &&
+            !utils.isDoubleSpaced(userId) &&
+            utils.isOnlyNumber(userId)
+        return validate;
+    }
+}
 class TableController {
     async create(req, res) {
         try {
-            const { name, imgUrl } = req.body;
-            const { userId } = req.params;
-
+            const { name, imgUrl, userId } = req.body;
             const data = {};
 
-            if (name != undefined) {
+            const validUserData =
+                validateTable.isValidName(name) &&
+                validateTable.isValidImgUrl(imgUrl) &&
+                validateTable.isValidUserId(userId);
+
+            if (validUserData) {
                 data.name = name;
-            } else {
-                res.statusCode = 406;
-                res.json({ status: false, msg: 'Campo de nome não preenchido' });
-            }
-            if (imgUrl != undefined) {
                 data.imgUrl = imgUrl;
-            } else {
-                res.statusCode = 406;
-                res.json({ status: false, msg: 'Preencha o campo referência corretamente' });
-            }
-            if (userId != undefined) {
                 data.user_id = userId;
             } else {
-                res.statusCode = 406;
-                res.json({ status: false, msg: 'É necessário informar o id do usuário a quem pertence essa tabela' });
+                res.statusCode = 400;
+                res.json({ status: false, msg: 'Nome, id de usuário ou url da imagem errado(s)' });
             }
 
             const userIdExists = await User.validateId(userId);
-            console.log(userIdExists);
+
             if (userIdExists != []) {
                 const { status, msg } = await Table.create(data);
+                console.log(msg);
                 if (status) {
                     res.statusCode = 200;
                     res.json({ status: true, msg });
                 } else {
-                    res.statusCode = 201;
-                    res.json({ status: false, msg: 'a' })
+                    res.statusCode = 500;
+                    res.json({ status: false, msg: 'Erro no banco de dados' })
                 }
             } else {
                 res.statusCode = 404;
@@ -57,7 +75,6 @@ class TableController {
 
                 if (userIdExists) {
                     const { status, code, data } = await Table.getAll(userId);
-                    console.log(data);
                     if (status) {
                         res.statusCode = code;
                         res.json(data);
@@ -78,6 +95,28 @@ class TableController {
         }
     }
 
+    async getSingle(req, res) {
+        const { id } = req.params;
+
+        if (id) {
+            const idExists = await Table.idExists(id);
+            if (idExists) {
+                const result = await Table.getSingle(id);
+                if (result.length > 0) {
+                    res.statusCode = 200;
+                    res.json({status: true, data: result})
+                }else {
+                    res.statusCode = 404;
+                    res.json({status: false, msg: 'Tabela não encontrada'})
+                }
+            } else {
+                res.statusCode = 400;
+                res.json({status: false, msg: "Id informado não existe"})
+            }
+        }
+    }
+
+    
 }
 
 module.exports = new TableController();
