@@ -38,6 +38,19 @@ class Table {
         }
     }
 
+    async delete(id) {
+        try {
+            const result = await database.delete('*').from('tables').where({'id': id});
+            if(result == 1) {
+                return {status: true, msg: "Tabela excluida com sucesso"}
+            } else {
+                return {status: false, msg: "Tabela não existe."}
+            }
+        } catch (err) {
+            return {status: false, msg: err};
+        }
+    }
+    
     async idExists(id) {
         try {
             const result = await database.select().from('tables').where({ 'id': id });

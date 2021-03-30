@@ -20,4 +20,6 @@ router.delete("/user/:id", UserController.delete);
 router.post("/table", TableController.create);
 router.get('/table', TableController.getAll);
 router.get('/table/:id', TableController.getSingle);
+router.delete('/table/:id', TableController.delete);
+router.put('/table/:id', TableController.update);
 module.exports = router;

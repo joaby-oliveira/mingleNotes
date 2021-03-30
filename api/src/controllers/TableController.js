@@ -116,7 +116,25 @@ class TableController {
         }
     }
 
-    
+    async delete(req, res) {
+        try {
+            const {id} = req.params;
+            if(id){
+                const {status, msg} = await Table.delete(id);
+                if(status) {
+                    res.statusCode = 200;
+                    res.send({status, msg})
+                } else {
+                    res.statusCode = 400;
+                    res.send({status, msg})
+                }
+            }else {
+                res.send({status: false, msg: 'O id precisa ser informado'})
+            }
+        } catch(err) {
+            res.send({status: false, msg: `erro ao deletar tabela:${err}`})
+        }
+    }
 }
 
 module.exports = new TableController();
