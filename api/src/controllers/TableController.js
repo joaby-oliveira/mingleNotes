@@ -104,35 +104,35 @@ class TableController {
                 const result = await Table.getSingle(id);
                 if (result.length > 0) {
                     res.statusCode = 200;
-                    res.json({status: true, data: result})
-                }else {
+                    res.json({ status: true, data: result })
+                } else {
                     res.statusCode = 404;
-                    res.json({status: false, msg: 'Tabela não encontrada'})
+                    res.json({ status: false, msg: 'Tabela não encontrada' })
                 }
             } else {
                 res.statusCode = 400;
-                res.json({status: false, msg: "Id informado não existe"})
+                res.json({ status: false, msg: "Id informado não existe" })
             }
         }
     }
 
     async delete(req, res) {
         try {
-            const {id} = req.params;
-            if(id){
-                const {status, msg} = await Table.delete(id);
-                if(status) {
+            const { id } = req.params;
+            if (id) {
+                const { status, msg } = await Table.delete(id);
+                if (status) {
                     res.statusCode = 200;
-                    res.send({status, msg})
+                    res.send({ status, msg })
                 } else {
                     res.statusCode = 400;
-                    res.send({status, msg})
+                    res.send({ status, msg })
                 }
-            }else {
-                res.send({status: false, msg: 'O id precisa ser informado'})
+            } else {
+                res.send({ status: false, msg: 'O id precisa ser informado' })
             }
-        } catch(err) {
-            res.send({status: false, msg: `erro ao deletar tabela:${err}`})
+        } catch (err) {
+            res.send({ status: false, msg: `erro ao deletar tabela:${err}` })
         }
     }
 }
