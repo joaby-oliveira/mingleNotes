@@ -135,6 +135,46 @@ class TableController {
             res.send({ status: false, msg: `erro ao deletar tabela:${err}` })
         }
     }
+
+    async update(req, res) {
+        try {
+            const { name, imgUrl } = req.body;
+            const { id } = req.params;
+            const data = {};
+
+            const validUserData =
+                validateTable.isValidName(name) &&
+                validateTable.isValidImgUrl(imgUrl)
+
+            if (validUserData) {
+                data.name = name;
+                data.imgUrl = imgUrl;
+                data.id = id;
+            } else {
+                res.statusCode = 400;
+                res.json({ status: false, msg: 'Nome, id da tabela ou url da imagem errado(s)' });
+            }
+
+            const idExists = await Table.idExists(id);
+
+            if (idExists != []) {
+                const { status, msg } = await Table.update(data);
+                if (status) {
+                    res.statusCode = 200;
+                    res.json({ status, msg });
+                } else {
+                    res.statusCode = 500;
+                    res.json({ status, msg })
+                }
+            } else {
+                res.statusCode = 404;
+                res.json({ status: false, msg: 'Tabela não existe' })
+            }
+        } catch (err) {
+            res.statusCode = 406;
+            res.json({ status: false, msg: 'Algum erro aconteceu' })
+        }
+    }
 }
 
 module.exports = new TableController();

@@ -60,6 +60,18 @@ class Table {
         }
     }
 
+    async update({ id, name, imgUrl }) {
+        try {
+            const result = await database('tables').update({
+                name: name,
+                imgUrl: imgUrl
+            }).where('id', '=', id);
+            return {status: true, msg: 'Tabela editada com sucesso'};
+        } catch (err) {
+            return { status: false, msg: err };
+        }
+    }
+
 }
 
 module.exports = new Table();
